@@ -6,6 +6,7 @@ import FileUpload from "@/components/FileUpload";
 import StatsCards from "@/components/StatsCards";
 import Charts from "@/components/Charts";
 import ResultsTable from "@/components/ResultsTable";
+import JobStatusLists from "@/components/JobStatusLists";
 import { generateMockData, calculateStats, LogEntry } from "@/utils/mockData";
 
 const Index = () => {
@@ -64,6 +65,7 @@ const Index = () => {
         {logData.length > 0 && (
           <>
             <StatsCards stats={stats} />
+            <JobStatusLists data={logData} />
             <Charts data={logData} />
             <ResultsTable data={logData} />
           </>
