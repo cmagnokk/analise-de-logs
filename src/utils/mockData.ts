@@ -10,7 +10,7 @@ export interface LogEntry {
 export const generateMockData = (files: File[]): LogEntry[] => {
   const mockEntries: LogEntry[] = [
     {
-      jobName: "Database_Backup_Daily",
+      jobName: "Chem01",
       date: "2024-01-15 02:30:15",
       status: "success",
       errors: 0,
@@ -18,7 +18,7 @@ export const generateMockData = (files: File[]): LogEntry[] => {
       details: "Backup do banco de dados concluído com sucesso. Aviso: Alguns índices foram reconstruídos durante o processo."
     },
     {
-      jobName: "Files_Backup_Weekly",
+      jobName: "Chem02",
       date: "2024-01-14 01:45:22",
       status: "failed",
       errors: 3,
@@ -26,7 +26,7 @@ export const generateMockData = (files: File[]): LogEntry[] => {
       details: "Falha no backup dos arquivos. Erro: Não foi possível acessar o diretório de destino. Verificar permissões."
     },
     {
-      jobName: "System_Config_Backup",
+      jobName: "Chem03",
       date: "2024-01-14 00:15:10",
       status: "warning",
       errors: 0,
@@ -34,7 +34,7 @@ export const generateMockData = (files: File[]): LogEntry[] => {
       details: "Backup das configurações do sistema parcialmente concluído. Avisos: 2 arquivos de configuração não puderam ser lidos."
     },
     {
-      jobName: "Log_Archive_Monthly",
+      jobName: "Chem04",
       date: "2024-01-13 23:30:45",
       status: "success",
       errors: 0,
@@ -42,7 +42,7 @@ export const generateMockData = (files: File[]): LogEntry[] => {
       details: "Arquivamento de logs mensais concluído com sucesso. Todos os arquivos foram compactados e armazenados."
     },
     {
-      jobName: "Application_Data_Backup",
+      jobName: "Chem05",
       date: "2024-01-13 20:15:30",
       status: "success",
       errors: 0,
@@ -50,7 +50,7 @@ export const generateMockData = (files: File[]): LogEntry[] => {
       details: "Backup dos dados da aplicação concluído. Avisos: Alguns arquivos temporários foram ignorados durante o processo."
     },
     {
-      jobName: "Database_Backup_Daily",
+      jobName: "Chem06",
       date: "2024-01-12 02:30:18",
       status: "failed",
       errors: 1,
@@ -58,7 +58,7 @@ export const generateMockData = (files: File[]): LogEntry[] => {
       details: "Falha no backup do banco de dados. Erro: Timeout na conexão com o servidor de banco de dados."
     },
     {
-      jobName: "Security_Backup_Critical",
+      jobName: "Chem07",
       date: "2024-01-12 01:00:05",
       status: "success",
       errors: 0,
@@ -66,7 +66,7 @@ export const generateMockData = (files: File[]): LogEntry[] => {
       details: "Backup crítico de segurança executado com sucesso. Todos os certificados e chaves foram salvos com segurança."
     },
     {
-      jobName: "User_Data_Sync",
+      jobName: "Chem08",
       date: "2024-01-11 18:45:12",
       status: "warning",
       errors: 0,
@@ -93,8 +93,10 @@ export const generateMockData = (files: File[]): LogEntry[] => {
       errors = Math.floor(Math.random() * 3) + 1;
     }
 
+    const jobNumber = String(mockEntries.length + 1).padStart(2, '0');
+    
     mockEntries.push({
-      jobName: file.name.replace(/\.(log|txt)$/, '').replace(/[_-]/g, ' '),
+      jobName: `Chem${jobNumber}`,
       date: new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000).toLocaleString('pt-BR'),
       status,
       errors,
