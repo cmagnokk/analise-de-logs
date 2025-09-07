@@ -27,7 +27,7 @@ const FileUpload = ({ onFilesUploaded }: FileUploadProps) => {
     setDragActive(false);
 
     const files = Array.from(e.dataTransfer.files).filter(
-      file => file.type === "text/plain" || file.name.includes(".log")
+      file => file.type === "text/plain" || file.name.endsWith(".txt")
     );
     
     if (files.length > 0) {
@@ -74,7 +74,7 @@ const FileUpload = ({ onFilesUploaded }: FileUploadProps) => {
           <input
             type="file"
             multiple
-            accept=".log,.txt"
+            accept=".txt"
             onChange={handleFileInput}
             className="hidden"
             id="file-upload"
@@ -87,7 +87,7 @@ const FileUpload = ({ onFilesUploaded }: FileUploadProps) => {
           </Button>
 
           <p className="text-xs text-muted-foreground">
-            Suporta arquivos .log e .txt
+            Suporta apenas arquivos .txt
           </p>
         </div>
 
