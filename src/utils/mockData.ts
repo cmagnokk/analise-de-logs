@@ -10,9 +10,27 @@ export interface LogEntry {
 export const processLogFile = async (file: File): Promise<LogEntry> => {
   const content = await file.text();
   
-  // Extrai o nome real da Chem do conteúdo do log
-  const chemNameMatch = content.match(/Chem\d{3}/);
-  const jobName = chemNameMatch ? chemNameMatch[0] : file.name.replace('.txt', '');
+  // Extrai o nome real da Chem do conteúdo do log com diferentes padrões
+  let jobName = file.name.replace('.txt', '');
+  
+  // Busca por padrões como "Chem14", "Chem014", etc.
+  const chemPatterns = [
+    /Chem\d{1,3}/i,
+    /job:\s*Chem\d{1,3}/i,
+    /\bChem\d{1,3}\b/i
+  ];
+  
+  for (const pattern of chemPatterns) {
+    const match = content.match(pattern);
+    if (match) {
+      // Extrai apenas a parte "ChemXX" do match
+      const chemMatch = match[0].match(/Chem\d{1,3}/i);
+      if (chemMatch) {
+        jobName = chemMatch[0];
+        break;
+      }
+    }
+  }
   
   let status: 'success' | 'failed' | 'warning' | 'no-files' | 'incremental' = 'success';
   let errors = 0;
