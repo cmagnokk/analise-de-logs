@@ -9,7 +9,10 @@ export interface LogEntry {
 
 export const processLogFile = async (file: File): Promise<LogEntry> => {
   const content = await file.text();
-  const jobName = `Chem${String(Math.floor(Math.random() * 999) + 1).padStart(3, '0')}`;
+  
+  // Extrai o nome real da Chem do conteúdo do log
+  const chemNameMatch = content.match(/Chem\d{3}/);
+  const jobName = chemNameMatch ? chemNameMatch[0] : file.name.replace('.txt', '');
   
   let status: 'success' | 'failed' | 'warning' | 'no-files' | 'incremental' = 'success';
   let errors = 0;
