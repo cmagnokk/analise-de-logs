@@ -16,22 +16,29 @@ const Index = () => {
   const handleFilesUploaded = async (files: File[]) => {
     setIsProcessing(true);
     
-    // Simula processamento dos arquivos
-    setTimeout(() => {
-      const newData = generateMockData(files);
+    toast({
+      title: "Processando arquivos...",
+      description: "Analisando logs de backup, por favor aguarde.",
+    });
+    
+    try {
+      // Processa os arquivos reais
+      const newData = await generateMockData(files);
       setLogData(prev => [...newData, ...prev]);
-      setIsProcessing(false);
       
       toast({
         title: "Arquivos processados com sucesso!",
         description: `${files.length} arquivo(s) analisado(s) e ${newData.length} entrada(s) de log processada(s).`,
       });
-    }, 2000);
-
-    toast({
-      title: "Processando arquivos...",
-      description: "Analisando logs de backup, por favor aguarde.",
-    });
+    } catch (error) {
+      toast({
+        title: "Erro ao processar arquivos",
+        description: "Ocorreu um erro durante o processamento dos logs.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   const stats = calculateStats(logData);

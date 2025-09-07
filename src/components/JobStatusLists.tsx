@@ -11,6 +11,8 @@ const JobStatusLists = ({ data }: JobStatusListsProps) => {
   const successJobs = data.filter(entry => entry.status === 'success');
   const failedJobs = data.filter(entry => entry.status === 'failed');
   const warningJobs = data.filter(entry => entry.status === 'warning');
+  const noFilesJobs = data.filter(entry => entry.status === 'no-files');
+  const incrementalJobs = data.filter(entry => entry.status === 'incremental');
 
   const JobList = ({ jobs, type, icon, badgeClass }: { 
     jobs: LogEntry[], 
@@ -65,7 +67,7 @@ const JobStatusLists = ({ data }: JobStatusListsProps) => {
   );
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
       <JobList 
         jobs={successJobs}
         type="Sucesso"
@@ -85,6 +87,20 @@ const JobStatusLists = ({ data }: JobStatusListsProps) => {
         type="Aviso"
         icon={<AlertTriangle className="h-4 w-4 text-warning" />}
         badgeClass="bg-warning-soft text-warning border-warning/20"
+      />
+
+      <JobList 
+        jobs={noFilesJobs}
+        type="Sem Novos Arquivos"
+        icon={<AlertTriangle className="h-4 w-4 text-muted-foreground" />}
+        badgeClass="bg-muted text-muted-foreground border-muted/20"
+      />
+
+      <JobList 
+        jobs={incrementalJobs}
+        type="Incremental"
+        icon={<CheckCircle className="h-4 w-4 text-blue-500" />}
+        badgeClass="bg-blue-50 text-blue-600 border-blue-200"
       />
     </div>
   );

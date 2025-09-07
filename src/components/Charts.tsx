@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 interface LogEntry {
   jobName: string;
   date: string;
-  status: 'success' | 'failed' | 'warning';
+  status: 'success' | 'failed' | 'warning' | 'no-files' | 'incremental';
   errors: number;
   warnings: number;
 }
@@ -30,6 +30,16 @@ const Charts = ({ data }: ChartsProps) => {
       value: data.filter(d => d.status === 'warning').length,
       color: "hsl(var(--warning))",
     },
+    {
+      name: "Sem novos arquivos",
+      value: data.filter(d => d.status === 'no-files').length,
+      color: "hsl(var(--muted-foreground))",
+    },
+    {
+      name: "Incremental",
+      value: data.filter(d => d.status === 'incremental').length,
+      color: "#3b82f6",
+    },
   ];
 
   const timelineData = data.reduce((acc, entry) => {
@@ -37,13 +47,15 @@ const Charts = ({ data }: ChartsProps) => {
     const existing = acc.find(item => item.date === date);
     
     if (existing) {
-      existing[entry.status]++;
+      existing[entry.status === 'no-files' ? 'noFiles' : entry.status]++;
     } else {
       acc.push({
         date,
         success: entry.status === 'success' ? 1 : 0,
         failed: entry.status === 'failed' ? 1 : 0,
         warning: entry.status === 'warning' ? 1 : 0,
+        noFiles: entry.status === 'no-files' ? 1 : 0,
+        incremental: entry.status === 'incremental' ? 1 : 0,
       });
     }
     
@@ -106,6 +118,8 @@ const Charts = ({ data }: ChartsProps) => {
               <Bar dataKey="success" stackId="a" fill="hsl(var(--success))" />
               <Bar dataKey="failed" stackId="a" fill="hsl(var(--destructive))" />
               <Bar dataKey="warning" stackId="a" fill="hsl(var(--warning))" />
+              <Bar dataKey="noFiles" stackId="a" fill="hsl(var(--muted-foreground))" />
+              <Bar dataKey="incremental" stackId="a" fill="#3b82f6" />
             </BarChart>
           </ResponsiveContainer>
         </CardContent>

@@ -16,7 +16,7 @@ import {
 interface LogEntry {
   jobName: string;
   date: string;
-  status: 'success' | 'failed' | 'warning';
+  status: 'success' | 'failed' | 'warning' | 'no-files' | 'incremental';
   errors: number;
   warnings: number;
   details?: string;
@@ -80,6 +80,10 @@ const ResultsTable = ({ data }: ResultsTableProps) => {
         return <XCircle className="h-4 w-4 text-destructive" />;
       case 'warning':
         return <AlertTriangle className="h-4 w-4 text-warning" />;
+      case 'no-files':
+        return <AlertTriangle className="h-4 w-4 text-muted-foreground" />;
+      case 'incremental':
+        return <CheckCircle className="h-4 w-4 text-blue-500" />;
       default:
         return null;
     }
@@ -90,11 +94,21 @@ const ResultsTable = ({ data }: ResultsTableProps) => {
       success: "bg-success-soft text-success border-success/20",
       failed: "bg-destructive-soft text-destructive border-destructive/20",
       warning: "bg-warning-soft text-warning border-warning/20",
+      'no-files': "bg-muted text-muted-foreground border-muted/20",
+      incremental: "bg-blue-50 text-blue-600 border-blue-200",
+    };
+
+    const labels = {
+      success: 'Sucesso',
+      failed: 'Falha',
+      warning: 'Aviso',
+      'no-files': 'Sem novos arquivos',
+      incremental: 'Incremental',
     };
 
     return (
       <Badge className={variants[status as keyof typeof variants] || ""}>
-        {status === 'success' ? 'Sucesso' : status === 'failed' ? 'Falha' : 'Aviso'}
+        {labels[status as keyof typeof labels] || status}
       </Badge>
     );
   };
